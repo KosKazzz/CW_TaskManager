@@ -4,8 +4,8 @@ public class Command {
     static final String COMMAND_ADD = "ADD";
     static final String COMMAND_REMOVE = "REMOVE";
     static final String COMMAND_RESTORE = "RESTORE";
-    public String type;
-    public String task;
+    protected String type;
+    protected String task;
 
     @Override
     public String toString() {

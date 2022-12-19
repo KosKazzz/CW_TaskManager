@@ -6,14 +6,13 @@ import org.junit.jupiter.api.Test;
 public class TodosTests {
     Todos testTodos = new Todos();
 
-    //DataForTodos dataForTodos = new DataForTodos();
-    @Test
+/*    @Test
     void addTaskTest() {
         String expectedTask = "qwerty";
         testTodos.addTask("qwerty");
         String actualTask = testTodos.tasks.get(0);
         Assertions.assertEquals(expectedTask, actualTask);
-    }
+    }*/
 
     @Test
     void getAllTaskTest() {
@@ -76,26 +75,23 @@ public class TodosTests {
 
     @Test
     void restoreTaskTest() {
-        testTodos.commandsTypeLog.add("ADD");
-        testTodos.commandsTypeLog.add("ADD");
-        testTodos.commandsTypeLog.add("REMOVE");
-        testTodos.commandsTypeLog.add("ADD");
-        testTodos.tasks.add("Первая");
-        testTodos.tasks.add("Вторая");
-        testTodos.tasks.add("Третья");
-        testTodos.deletedTasks.add("Первая");
+        testTodos.addTask("Первая");
+        testTodos.addTask("Вторая");
+        testTodos.removeTask("Первая");
+        testTodos.addTask("Третья");
         String expected = "Вторая Первая";
         testTodos.restoreTask();
         testTodos.restoreTask();
         String actual = testTodos.getAllTasks();
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
-    void parseClientCommandToJsonTest(){
-        String expected ="{ \"type\":\"ADD\", \"task\": \"gotojobmfc\" }";
+    void parseClientCommandToJsonTest() {
+        String expected = "{ \"type\":\"ADD\", \"task\": \"gotojobmfc\" }";
         String type = "ADD";
         String task = "gotojobmfc";
-        String actual = DataForTodos.parseClientCommandToJson(type,task);
-        Assertions.assertEquals(expected,actual);
+        String actual = DataForTodos.parseClientCommandToJson(type, task);
+        Assertions.assertEquals(expected, actual);
     }
 }
