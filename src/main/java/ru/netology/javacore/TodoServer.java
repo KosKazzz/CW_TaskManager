@@ -23,7 +23,7 @@ public class TodoServer {
                         PrintWriter out = new PrintWriter(socket.getOutputStream());
                 ) {
                     String fromClient = in.readLine(); // jsonstring, come from client
-                    todos.manageCommandsForTodos(DataForTodos.parseJsonToCommand(fromClient));
+                    todos.manageCommandsForTodos(fromClient);
                     out.write(todos.getAllTasks());
                     out.flush();
 

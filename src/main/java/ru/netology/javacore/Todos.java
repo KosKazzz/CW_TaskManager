@@ -8,6 +8,8 @@ public class Todos {
     private List<String> tasks = new ArrayList<>(CAPACITY);//таски.
     private List<String> commandsTypeLog = new ArrayList<>(); //команды
     private List<String> deletedTasks = new ArrayList<>(); //удалённые таски
+    // храним в TreeSet; лог храним в ArrayList - всю строку в json; в методе restore() парсим эту строку в Command
+    // и откатываем в соответствии с последней записью.
 
 
     public void addTask(String task) {
@@ -40,7 +42,8 @@ public class Todos {
         }
     }
 
-    public void manageCommandsForTodos(Command command) {
+    public void manageCommandsForTodos(String fromClient) {
+        Command command = DataForTodos.parseJsonToCommand(fromClient);
         switch (command.type) {
             case Command.COMMAND_ADD:
                 this.addTask(command.task);
