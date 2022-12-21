@@ -1,43 +1,37 @@
 package ru.netology.javacore;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Todos {
     private static final int CAPACITY = 7;  // ограничение по условию задачи
-    private List<String> tasks = new ArrayList<>(CAPACITY);//таски.
-    private List<String> commandsTypeLog = new ArrayList<>(); //команды
-    private List<String> deletedTasks = new ArrayList<>(); //удалённые таски
-    // храним в TreeSet; лог храним в ArrayList - всю строку в json; в методе restore() парсим эту строку в Command
-    // и откатываем в соответствии с последней записью.
+    private TreeSet<String> tasks = new TreeSet<>();//таски.
+    private List<String> logList = new ArrayList<>();// Храним все команды
 
 
     public void addTask(String task) {
         if (tasks.size() < CAPACITY) {
             tasks.add(task);
-            commandsTypeLog.add(Command.COMMAND_ADD);
         }
     }
 
     public void removeTask(String task) {
         tasks.remove(task);
-        commandsTypeLog.add(Command.COMMAND_REMOVE);
-        deletedTasks.add(task);
     }
 
     public String getAllTasks() {
-        return tasks.stream().sorted().collect(Collectors.joining(" "));
+        return String.join(" ", tasks);
     }
 
     public void restoreTask() {
-        switch (commandsTypeLog.get(commandsTypeLog.size() - 1)) {
+        Command command = DataForTodos.parseJsonToCommand(logList.get(logList.size() - 1));
+        switch (command.type) {
             case Command.COMMAND_ADD:
-                tasks.remove(tasks.size() - 1);
-                commandsTypeLog.remove(commandsTypeLog.size() - 1);
+                tasks.remove(command.task);
+                logList.remove(logList.size() - 1);
                 break;
             case Command.COMMAND_REMOVE:
-                tasks.add(deletedTasks.get(deletedTasks.size() - 1));
-                commandsTypeLog.remove(commandsTypeLog.size() - 1);
+                tasks.add(command.task);
+                logList.remove(logList.size() - 1);
                 break;
         }
     }
@@ -47,13 +41,24 @@ public class Todos {
         switch (command.type) {
             case Command.COMMAND_ADD:
                 this.addTask(command.task);
+                logList.add(fromClient);
                 break;
             case Command.COMMAND_REMOVE:
                 this.removeTask(command.task);
+                logList.add(fromClient);
                 break;
             case Command.COMMAND_RESTORE:
                 this.restoreTask();
                 break;
         }
+    }
+
+    //for tests
+    public void setLogList(String str) {
+        logList.add(str);
+    }
+
+    public String getLogList() {
+        return logList.toString();
     }
 }

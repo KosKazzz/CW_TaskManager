@@ -6,14 +6,6 @@ import org.junit.jupiter.api.Test;
 public class TodosTests {
     Todos testTodos = new Todos();
 
-/*    @Test
-    void addTaskTest() {
-        String expectedTask = "qwerty";
-        testTodos.addTask("qwerty");
-        String actualTask = testTodos.tasks.get(0);
-        Assertions.assertEquals(expectedTask, actualTask);
-    }*/
-
     @Test
     void getAllTaskTest() {
         String expected = "aaa bbb ccc";
@@ -37,7 +29,7 @@ public class TodosTests {
     }
 
     @Test
-    void removeLastTask() { //бесполезный тест
+    void removeLastTask() {
         String expected = "";
         testTodos.removeTask("ccc");
         String actual = testTodos.getAllTasks();
@@ -76,9 +68,13 @@ public class TodosTests {
     @Test
     void restoreTaskTest() {
         testTodos.addTask("Первая");
+        testTodos.setLogList("{ \"type\":\"ADD\", \"task\": \"Первая\" }");
         testTodos.addTask("Вторая");
+        testTodos.setLogList("{ \"type\":\"ADD\", \"task\": \"Вторая\" }");
         testTodos.removeTask("Первая");
+        testTodos.setLogList("{ \"type\":\"REMOVE\", \"task\": \"Первая\" }");
         testTodos.addTask("Третья");
+        testTodos.setLogList("{ \"type\":\"ADD\", \"task\": \"Третья\" }");
         String expected = "Вторая Первая";
         testTodos.restoreTask();
         testTodos.restoreTask();
@@ -88,9 +84,9 @@ public class TodosTests {
 
     @Test
     void parseClientCommandToJsonTest() {
-        String expected = "{ \"type\":\"ADD\", \"task\": \"gotojobmfc\" }";
+        String expected = "{ \"type\":\"ADD\", \"task\": \"go to job\" }";
         String type = "ADD";
-        String task = "gotojobmfc";
+        String task = "go to job";
         String actual = DataForTodos.parseClientCommandToJson(type, task);
         Assertions.assertEquals(expected, actual);
     }

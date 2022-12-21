@@ -14,7 +14,6 @@ public class DataForTodos {
     public static String parseClientCommandToJson(String type, String task) {
         Gson gson = new Gson();
         return "{ \"type\":" + gson.toJson(type).toUpperCase() + ", \"task\": " + gson.toJson(task) + " }";
-        // Зачем тут Gson?...
     }
 
 }
